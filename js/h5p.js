@@ -310,6 +310,10 @@ H5P.init = function (target) {
           H5P.trigger(instance, 'resize');
         });
 
+        H5P.communicator.on('respondChangeHash', (event) => {
+          H5P.trigger(instance, 'newHash', event);
+        })
+
         H5P.on(instance, 'resize', function () {
           if (H5P.isFullscreen) {
             return; // Skip iframe resize

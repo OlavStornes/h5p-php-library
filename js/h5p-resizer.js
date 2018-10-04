@@ -37,6 +37,41 @@
     respond('hello');
   };
 
+
+  /**
+   * Change hash value.
+   *
+   * @private
+   * @param {Object} iframe Element
+   * @param {Object} data Payload
+   * @param {Function} respond Send a response to the iframe
+   */
+  actionHandlers.changeHash = (iframe, data, respond) => {
+    //TODO: Some sort of assertion?
+    window.location.hash = data.newHash;
+  };
+  
+  /**
+   * Listen to hash changes
+   */
+  window.addEventListener('hashchange', (event) => {
+    const newHash = new URL(event.newURL).hash
+    // Let h5p iframes know about changes in the hash
+    const iframes = document.getElementsByTagName('iframe');
+    const hashPayload = {
+      context: 'h5p',
+      newHash: newHash,
+      action: 'respondChangeHash'
+    };
+    for (var i = 0; i < iframes.length; i++) {
+      if (iframes[i].src.indexOf('h5p') !== -1) {
+        //Broadcast the new hash value
+        iframes[i].contentWindow.postMessage(hashPayload, '*');
+      }
+    }
+  });
+
+
   /**
    * Prepare iframe resize.
    *

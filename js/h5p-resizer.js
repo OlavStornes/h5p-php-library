@@ -61,6 +61,7 @@
     const hashPayload = {
       context: 'h5p',
       newHash: newHash,
+      newURL: event.newURL,
       action: 'respondChangeHash'
     };
     for (var i = 0; i < iframes.length; i++) {
